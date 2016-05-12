@@ -13,13 +13,24 @@ var cbReview = require('./callbackReview.js');
 var pluckFirstLineFromFileAsync = function(filePath) {
   // TODO
   return new Promise((resolve, reject) => {
-    cbReview.pluckFirstLineFromFile(filePath, resolve);
+    fs.readFile(filePath, 'utf8', (err, contents) => {
+      if (err) { 
+        reject(err); 
+      } else { resolve(contents.match(/.*/g)[0]); }
+    });
   });
 };
 
 // This function should retrieve the status code of a GET request to `url`
 var getStatusCodeAsync = function(url) {
   // TODO
+  return new Promise((resolve, reject) => {
+    request(url, (err, res, body) => {
+      if (err) {
+        reject(err); 
+      } else { resolve(res.statusCode); }
+    });
+  });
 };
 
 // Export these functions so we can test them and reuse them in later exercises
